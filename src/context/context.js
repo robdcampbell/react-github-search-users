@@ -8,14 +8,15 @@ const rootUrl = "https://api.github.com";
 
 // can access Provider, (Consumer, not really) - GithubContext.Provider
 const GithubContext = React.createContext();
-// ^^ we don't wrap GithubContext around everything, because we want to set up more logic in it to be passed.
 
-// The "Wrapper" that creates the context for the global state to be accesed.
 const GithubProvider = ({ children }) => {
-  // access the children passed from the GithubProvider that wraps the whole app (children). Variables passed in 'Value" will be accessible.
-
+  const [githubUser, setGithubUser] = useState(mockUser);
+  const [repos, setRrops] = useState(mockRepos);
+  const [followers, setFollowers] = useState(mockFollowers);
   return (
-    <GithubContext.Provider value={"Hello"}>{children}</GithubContext.Provider>
+    <GithubContext.Provider value={{ githubUser, repos, followers }}>
+      {children}
+    </GithubContext.Provider>
   );
 };
 
