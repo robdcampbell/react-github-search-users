@@ -1,9 +1,47 @@
-import React from 'react';
-import styled from 'styled-components';
-import { MdSearch } from 'react-icons/md';
-import { GithubContext } from '../context/context';
+import React from "react";
+import styled from "styled-components";
+import { MdSearch } from "react-icons/md";
+import { GithubContext } from "../context/context";
 const Search = () => {
-  return <h2>search component</h2>;
+  const [user, setUser] = React.useState("");
+  // Get things from global context
+  const { requests, error, searchGithubUser, isLoading } = React.useContext(
+    GithubContext
+  );
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (user) {
+      searchGithubUser(user);
+      // setUser("") - leaving this out of the UI for now.
+    }
+  };
+
+  return (
+    <section className="section">
+      <Wrapper className="section-center">
+        {error.show && (
+          <ErrorWrapper>
+            <p>{error.msg}</p>
+          </ErrorWrapper>
+        )}
+        <form onSubmit={handleSubmit}>
+          <div className="form-control">
+            <MdSearch />
+            <input
+              type="text"
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
+              placeholder="Enter github user"
+            />
+            {requests > 0 && !isLoading && (
+              <button type="submit">Search</button>
+            )}
+          </div>
+        </form>
+        <h3>Requests: {requests} / 60</h3>
+      </Wrapper>
+    </section>
+  );
 };
 
 const Wrapper = styled.div`
